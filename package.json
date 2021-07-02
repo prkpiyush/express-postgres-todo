@@ -1,0 +1,27 @@
+{
+  "name": "express-postgres-todo",
+  "version": "1.0.0",
+  "description": "Todo app with express-typescript and postgres",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "start": "nodemon --config nodemon.json"
+  },
+  "author": "Piyush",
+  "license": "ISC",
+  "dependencies": {
+    "class-validator": "^0.13.1",
+    "dotenv": "^8.6.0",
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.34"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "@types/node": "^15.12.5",
+    "nodemon": "^2.0.9",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.3.5"
+  }
+}
