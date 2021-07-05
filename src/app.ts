@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { createConnection } from 'typeorm';
+import { AuthRouter } from './routes/auth.routes';
 
 import { TodoRouter } from './routes/todo.routes';
 
@@ -25,6 +26,7 @@ createConnection()
 
     // Add routes
     app.use('/todos', TodoRouter);
+    app.use('/auth', AuthRouter);
     app.get('/', (req: Request, resp: Response) => {
       resp.send('Hello World')
     });

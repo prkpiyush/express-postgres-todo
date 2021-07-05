@@ -10,17 +10,21 @@
   "author": "Piyush",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "class-validator": "^0.13.1",
     "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.34"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.12",
     "@types/joi": "^17.2.3",
+    "@types/jsonwebtoken": "^8.5.3",
     "@types/node": "^15.12.5",
     "nodemon": "^2.0.9",
     "tsconfig-paths": "^3.9.0",

@@ -7,6 +7,7 @@ class TodoController {
       const todo = await TodoService.createTodo(req.body);
       resp.status(200).send(todo);
     } catch (error) {
+      console.log(error);
       resp.status(400).send('Unable to create todo');
     }
   }
@@ -16,6 +17,7 @@ class TodoController {
       const todos = await TodoService.getAllTodos();
       resp.status(200).send(todos);
     } catch (error) {
+      console.log(error);
       resp.status(404).send('');
     }
   }
@@ -25,6 +27,7 @@ class TodoController {
       const todos = await TodoService.searchTodos(req.body.search);
       resp.status(200).send(todos);
     } catch (error) {
+      console.log(error);
       resp.status(404).send('No todos found');
     }
   }
@@ -34,6 +37,7 @@ class TodoController {
       const todo = await TodoService.updateTodo(req.body);
       resp.status(200).send(todo);
     } catch (error) {
+      console.log(error);
       resp.status(404).send('Todo not found');
     }
   }
@@ -43,6 +47,7 @@ class TodoController {
       await TodoService.deleteTodo(req.params.id);
       resp.status(200).send({});
     } catch (error) {
+      console.log(error);
       resp.status(404).send('Todo not found');
     }
   }
