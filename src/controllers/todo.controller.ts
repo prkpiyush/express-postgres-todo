@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import TodoService from '../service/todo.srvc';
+import TodoService from '../services/todo.srvc';
 
 class TodoController {
   async create(req: Request, resp: Response) {
@@ -7,10 +7,7 @@ class TodoController {
       const todo = await TodoService.createTodo(req.body);
       resp.status(200).send(todo);
     } catch (error) {
-      resp.send({
-        msg: 'Unable to create todo',
-        status: 404
-      });
+      resp.status(400).send('Unable to create todo');
     }
   }
 
@@ -19,10 +16,7 @@ class TodoController {
       const todos = await TodoService.getAllTodos();
       resp.status(200).send(todos);
     } catch (error) {
-      resp.send({
-        msg: 'No todos found',
-        status: 404
-      });
+      resp.status(404).send('');
     }
   }
 
@@ -31,10 +25,7 @@ class TodoController {
       const todos = await TodoService.searchTodos(req.body.search);
       resp.status(200).send(todos);
     } catch (error) {
-      resp.send({
-        msg: 'No todos found',
-        status: 404
-      });
+      resp.status(404).send('No todos found');
     }
   }
 
@@ -43,10 +34,7 @@ class TodoController {
       const todo = await TodoService.updateTodo(req.body);
       resp.status(200).send(todo);
     } catch (error) {
-      resp.send({
-        msg: 'Unable to update todo',
-        status: 404
-      });
+      resp.status(404).send('Todo not found');
     }
   }
 
@@ -55,10 +43,7 @@ class TodoController {
       await TodoService.deleteTodo(req.params.id);
       resp.status(200).send({});
     } catch (error) {
-      resp.send({
-        msg: 'Todo not found',
-        status: 404
-      });
+      resp.status(404).send('Todo not found');
     }
   }
 }
