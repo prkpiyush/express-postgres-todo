@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
+import { RequestWithUser } from 'src/interfaces/requestWithInterface';
 import TodoService from '../services/todo.srvc';
 
 class TodoController {
-  async create(req: Request, resp: Response) {
+  async create(req: RequestWithUser, resp: Response) {
     try {
-      const todo = await TodoService.createTodo(req.body);
+      const todo = await TodoService.createTodo({ ...req.body, user: req.user });
       resp.status(200).send(todo);
     } catch (error) {
       console.log(error);
@@ -12,9 +13,9 @@ class TodoController {
     }
   }
 
-  async getAll(req: Request, resp: Response) {
+  async getAll(req: RequestWithUser, resp: Response) {
     try {
-      const todos = await TodoService.getAllTodos();
+      const todos = await TodoService.getAllTodos(req.user);
       resp.status(200).send(todos);
     } catch (error) {
       console.log(error);
@@ -22,9 +23,9 @@ class TodoController {
     }
   }
 
-  async search(req: Request, resp: Response) {
+  async search(req: RequestWithUser, resp: Response) {
     try {
-      const todos = await TodoService.searchTodos(req.body.search);
+      const todos = await TodoService.searchTodos(req.body.search, req.user);
       resp.status(200).send(todos);
     } catch (error) {
       console.log(error);
@@ -32,9 +33,9 @@ class TodoController {
     }
   }
 
-  async update(req: Request, resp: Response) {
+  async update(req: RequestWithUser, resp: Response) {
     try {
-      const todo = await TodoService.updateTodo(req.body);
+      const todo = await TodoService.updateTodo(req.body, req.user);
       resp.status(200).send(todo);
     } catch (error) {
       console.log(error);
@@ -42,9 +43,10 @@ class TodoController {
     }
   }
 
-  async delete(req: Request, resp: Response) {
+  async delete(req: RequestWithUser, resp: Response) {
     try {
-      await TodoService.deleteTodo(req.params.id);
+      const todoId = parseInt(req.params.id, 10);
+      await TodoService.deleteTodo(todoId, req.user);
       resp.status(200).send({});
     } catch (error) {
       console.log(error);

@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity({ name: 'todo' })
 export class Todo {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   title: string;
@@ -13,4 +14,7 @@ export class Todo {
 
   @Column({type: 'bool'})
   isComplete: boolean;
+
+  @ManyToOne(() => User, (user: User) => user.todos)
+  user: User;
 }

@@ -2,16 +2,16 @@ import { IsString, IsBoolean } from 'class-validator';
 
 class TodoDTO {
   @IsString()
-  id: string;
+  id: number;
 
   @IsString()
-  public title: string;
+  title: string;
 
   @IsString()
-  public description: string;
+  description: string;
 
   @IsBoolean()
-  public isComplete: boolean;
+  isComplete: boolean;
 }
 
 export default TodoDTO;

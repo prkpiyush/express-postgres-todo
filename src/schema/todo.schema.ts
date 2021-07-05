@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const id = Joi.string().alphanum().min(1);
+const id = Joi.number().min(1);
 const title = Joi.string();
 const description = Joi.string();
 const isComplete = Joi.bool();

@@ -33,7 +33,7 @@ class AuthController {
 
   private createToken(user: UserDto) {
     return jwt.sign(
-      { id: user.id, email: user.email },
+      { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );

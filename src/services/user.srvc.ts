@@ -1,16 +1,16 @@
 import { getRepository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import UserDTO from '../dto/user.dto';
+import UserDto from '../dto/user.dto';
 import { User } from '../entities/user.entity';
 
 class UserService {
-  async createUser(user: UserDTO): Promise<User> {
+  async createUser(user: UserDto): Promise<User> {
     const userRepository = getRepository(User);
     const pass = await this.hashPassword(user.password);
     return userRepository.save({ ...user, password: pass });
   }
 
-  async findUser(user: UserDTO): Promise<User> {
+  async findUser(user: UserDto): Promise<User> {
     const userRepository = getRepository(User);
     const userInDB = await userRepository.findOne({ where: { email: user.email } });
 

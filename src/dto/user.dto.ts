@@ -2,13 +2,13 @@ import { IsString, IsEmail } from 'class-validator';
 
 class UserDto {
   @IsString()
-  id: string;
+  id: number;
 
   @IsEmail()
-  public email: string;
+  email: string;
 
   @IsString()
-  public password: string;
+  password: string;
 }
 
 export default UserDto;

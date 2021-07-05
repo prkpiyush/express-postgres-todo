@@ -5,6 +5,7 @@ import { AuthRouter } from './routes/auth.routes';
 import { TodoRouter } from './routes/todo.routes';
 
 require('dotenv').config();
+require('reflect-metadata');
 
 var logger = function (req: Request, res: Response, next: NextFunction) {
   console.log(`Received request for ${req.path}`);
