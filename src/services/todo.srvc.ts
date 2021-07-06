@@ -1,5 +1,6 @@
-import UserDto from 'src/dto/user.dto';
 import { getRepository, ILike } from 'typeorm';
+
+import UserDto from 'src/dto/user.dto';
 import TodoDTO from '../dto/todo.dto';
 import { Todo } from '../entities/todo.entity';
 
@@ -26,8 +27,13 @@ class TodoService {
 
   async updateTodo(todo: TodoDTO, user: UserDto): Promise<Todo> {
     const todoRepository = getRepository(Todo);
-    await todoRepository.update(todo.id, todo);
-    return todoRepository.findOne(todo.id, { where: { user }});
+    const todoInDB = await todoRepository.findOne(todo.id, { where: { user } });
+    if (todoInDB) {
+      const updatedTodo = { ...todoInDB, ...todo, user };
+      return await todoRepository.save(updatedTodo);
+    }
+
+    return null;
   }
 
   async deleteTodo(id: number, user: UserDto): Promise<{}> {

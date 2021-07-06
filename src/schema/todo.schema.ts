@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const id = Joi.number().min(1);
+const id = Joi.number().min(1).strict();
 const title = Joi.string();
 const description = Joi.string();
 const isComplete = Joi.bool();
@@ -12,9 +12,9 @@ const createTodoSchema = Joi.object().keys({
 });
 
 const todoDataSchema = Joi.object().keys({
-  id: id.required(),
-  title: title.required(),
-  description: description.required(),
+  id: id,
+  title: title,
+  description: description,
   isComplete: isComplete
 });
 
