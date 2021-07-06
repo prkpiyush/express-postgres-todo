@@ -6,7 +6,7 @@ import TodoService from '../services/todo.srvc';
 class TodoController {
   async create(req: RequestWithUser, resp: Response) {
     try {
-      const todo = await TodoService.createTodo({ ...req.body, user: req.user });
+      const todo = await TodoService.createTodo(req.body, req.user);
       resp.status(200).send(todo);
     } catch (error) {
       console.log(error);

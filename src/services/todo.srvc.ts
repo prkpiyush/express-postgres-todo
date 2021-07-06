@@ -1,21 +1,28 @@
 import { getRepository, ILike } from 'typeorm';
 
-import UserDto from 'src/dto/user.dto';
 import TodoDTO from '../dto/todo.dto';
 import { Todo } from '../entities/todo.entity';
+import { User } from 'src/entities/user.entity';
 
 class TodoService {
-  async createTodo(todo: TodoDTO): Promise<Todo> {
+  async createTodo(todo: TodoDTO, user: User): Promise<Todo> {
     const todoRepository = getRepository(Todo);
-    return todoRepository.save(todo);
+    const todoData: Todo = {
+      id: todo.id,
+      title: todo.title,
+      description: todo.description,
+      isComplete: todo.isComplete,
+      user
+    };
+    return todoRepository.save(todoData);
   }
 
-  async getAllTodos(user: UserDto): Promise<Todo[]> {
+  async getAllTodos(user: User): Promise<Todo[]> {
     const todoRepository = getRepository(Todo);
     return todoRepository.find({ where: { user } });
   }
 
-  async searchTodos(searchString: string, user: UserDto): Promise<Todo[]> {
+  async searchTodos(searchString: string, user: User): Promise<Todo[]> {
     const todoRepository = getRepository(Todo);
     return todoRepository.find({
       where: [
@@ -25,18 +32,24 @@ class TodoService {
     });
   }
 
-  async updateTodo(todo: TodoDTO, user: UserDto): Promise<Todo> {
+  async updateTodo(todo: TodoDTO, user: User): Promise<Todo> {
     const todoRepository = getRepository(Todo);
     const todoInDB = await todoRepository.findOne(todo.id, { where: { user } });
     if (todoInDB) {
-      const updatedTodo = { ...todoInDB, ...todo, user };
+      const updatedTodo: Todo = {
+        id: todo.id || todoInDB.id,
+        title: todo.title || todoInDB.title,
+        description: todo.description || todoInDB.description,
+        isComplete: todo.isComplete || todoInDB.isComplete,
+        user
+      };
       return await todoRepository.save(updatedTodo);
     }
 
     return null;
   }
 
-  async deleteTodo(id: number, user: UserDto): Promise<{}> {
+  async deleteTodo(id: number, user: User): Promise<{}> {
     const todoRepository = getRepository(Todo);
     return await todoRepository.delete({ id, user });
   }

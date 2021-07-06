@@ -7,7 +7,12 @@ class UserService {
   async createUser(user: UserDto): Promise<User> {
     const userRepository = getRepository(User);
     const pass = await this.hashPassword(user.password);
-    return userRepository.save({ ...user, password: pass });
+    const userData: User = {
+      email: user.email,
+      password: pass
+    } as User;
+
+    return userRepository.save(userData);
   }
 
   async findUser(user: UserDto): Promise<User> {

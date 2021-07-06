@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import UserDto from 'src/dto/user.dto';
+
+import { User } from 'src/entities/user.entity';
 import { RequestWithUser } from 'src/interfaces/requestWithInterface';
 
 export const requireAuth = (req: RequestWithUser, resp: Response, next: NextFunction) => {
@@ -11,7 +12,7 @@ export const requireAuth = (req: RequestWithUser, resp: Response, next: NextFunc
       if (err) {
         throw new Error(err.message);
       } else {
-        req.user = { id: decodedToken.userId, email: decodedToken.email } as UserDto;
+        req.user = { id: decodedToken.userId, email: decodedToken.email } as User;
         next();
       }
     });
