@@ -1,7 +1,11 @@
+import { NextFunction, Response, Request } from "express";
 import { GeneralError } from "../helpers/error";
 import { ApiResponse } from '../helpers/ResponseHandler';
+import { logger } from "./logger";
 
-export const handleErrors = (err, req, res, next) => {
+export const handleErrors = (err: Error, req: Request, res: Response, next: NextFunction) => {
+  logger.error(err);
+
   if (err instanceof GeneralError) {
     return res
       .status(err.getCode())

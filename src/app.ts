@@ -1,17 +1,13 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { createConnection } from 'typeorm';
 import { handleErrors } from './middlewares/errorMiddleware';
+import { logger } from './middlewares/logger';
 import { AuthRouter } from './routes/auth.routes';
 
 import { TodoRouter } from './routes/todo.routes';
 
 require('dotenv').config();
 require('reflect-metadata');
-
-var logger = function (req: Request, res: Response, next: NextFunction) {
-  console.log(`Received request for ${req.path}`);
-  next(); // Passing the request to the next handler in the stack.
-}
 
 createConnection()
   .then(connection => {
@@ -24,7 +20,6 @@ createConnection()
     // Setup middlewares
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    app.use(logger);
 
     // Add routes
     app.use('/todos', TodoRouter);
@@ -38,8 +33,8 @@ createConnection()
 
     // Start the server
     app.listen(app.get('port'), () => {
-      console.log(('App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'));
-      console.log('Press CTRL-C to stop\n');
+      logger.info(`App is running at http://localhost:${app.get('port')} in ${app.get('env')} mode')`);
+      logger.info('Press CTRL-C to stop\n');
     });
   })
-  .catch(err => console.log('Error in creating typeORM connection', err));
+  .catch(err => logger.error('Error in creating typeORM connection', err));
