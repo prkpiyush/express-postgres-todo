@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import UserDto from '../dto/user.dto';
 import { User } from '../entities/user.entity';
+import { BadRequest } from '../helpers/error';
 
 class UserService {
   async createUser(user: UserDto): Promise<User> {
@@ -25,7 +26,7 @@ class UserService {
         return userInDB;
       }
 
-      throw new Error('Incorrect password');
+      throw new BadRequest('Incorrect password');
     }
 
     return null;

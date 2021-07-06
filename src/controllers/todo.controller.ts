@@ -1,61 +1,80 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { RequestWithUser } from 'src/interfaces/requestWithInterface';
+import { NotFound } from '../helpers/error';
+import { RequestWithUser } from 'src/interfaces/requestWithUser';
+import { ApiResponse } from '../helpers/ResponseHandler';
 import TodoService from '../services/todo.srvc';
 
 class TodoController {
-  async create(req: RequestWithUser, resp: Response) {
+  create = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
       const todo = await TodoService.createTodo(req.body, req.user);
-      resp.status(200).send(todo);
+      resp
+        .status(200)
+        .json(ApiResponse('Todo created', resp.statusCode, 'success', todo));
     } catch (error) {
-      console.log(error);
-      resp.status(400).send('Unable to create todo');
+      next(error);
     }
   }
 
-  async getAll(req: RequestWithUser, resp: Response) {
+  getAll = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
       const todos = await TodoService.getAllTodos(req.user);
-      resp.status(200).send(todos);
+      if (todos.length) {
+        resp
+          .status(200)
+          .json(ApiResponse('All todos', resp.statusCode, 'success', todos));
+      } else {
+        resp
+          .status(200)
+          .json(ApiResponse('No todos found', resp.statusCode, 'success', []));
+      }
     } catch (error) {
-      console.log(error);
-      resp.status(404).send('');
+      next(error);
     }
   }
 
-  async search(req: RequestWithUser, resp: Response) {
+  search = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
       const todos = await TodoService.searchTodos(req.body.search, req.user);
-      resp.status(200).send(todos);
+      if (todos.length) {
+        resp
+          .status(200)
+          .json(ApiResponse('Found todos', resp.statusCode, 'success', todos));
+      } else {
+        resp
+          .status(200)
+          .json(ApiResponse('No todos found', resp.statusCode, 'success', []));
+      }
     } catch (error) {
-      console.log(error);
-      resp.status(404).send('No todos found');
+      next(error);
     }
   }
 
-  async update(req: RequestWithUser, resp: Response) {
+  update = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
       const todo = await TodoService.updateTodo(req.body, req.user);
       if (todo) {
-        resp.status(200).send(todo);
+        resp
+          .status(200)
+          .json(ApiResponse('Updated todo', resp.statusCode, 'success', todo));
       } else {
-        throw new Error('Todo not found');
+        throw new NotFound('Todo not found');
       }
     } catch (error) {
-      console.log(error);
-      resp.status(404).send('Cannot update todo');
+      next(error);
     }
   }
 
-  async delete(req: RequestWithUser, resp: Response) {
+  delete = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
       const todoId = parseInt(req.params.id, 10);
       await TodoService.deleteTodo(todoId, req.user);
-      resp.status(200).send({});
+      resp
+        .status(200)
+        .json(ApiResponse('Deleted todo', resp.statusCode, 'success', {}));
     } catch (error) {
-      console.log(error);
-      resp.status(404).send('Todo not found');
+      next(error);
     }
   }
 }

@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { createConnection } from 'typeorm';
+import { handleErrors } from './middlewares/errorMiddleware';
 import { AuthRouter } from './routes/auth.routes';
 
 import { TodoRouter } from './routes/todo.routes';
@@ -31,6 +32,9 @@ createConnection()
     app.get('/', (req: Request, resp: Response) => {
       resp.send('Hello World')
     });
+
+    // Error middleware
+    app.use(handleErrors);
 
     // Start the server
     app.listen(app.get('port'), () => {

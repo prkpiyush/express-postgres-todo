@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 
 import { User } from 'src/entities/user.entity';
-import { RequestWithUser } from 'src/interfaces/requestWithInterface';
+import { BadRequest, Unauthorized } from '../helpers/error';
+import { RequestWithUser } from 'src/interfaces/requestWithUser';
 
 export const requireAuth = (req: RequestWithUser, resp: Response, next: NextFunction) => {
   const token = getToken(req);
@@ -10,14 +11,14 @@ export const requireAuth = (req: RequestWithUser, resp: Response, next: NextFunc
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
       if (err) {
-        throw new Error(err.message);
+        throw new BadRequest(err.message);
       } else {
         req.user = { id: decodedToken.userId, email: decodedToken.email } as User;
         next();
       }
     });
   } else {
-    resp.status(401).send('Unauthorised user');
+    throw new Unauthorized('User unauthorised');
   }
 };
 

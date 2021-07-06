@@ -1,33 +1,37 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
+
 import UserDto from 'src/dto/user.dto';
+import { BadRequest } from '../helpers/error';
+import { ApiResponse } from '../helpers/ResponseHandler';
 import UserService from '../services/user.srvc';
 
 class AuthController {
-  async signup(req: Request, resp: Response) {
+  signup = async (req: Request, resp: Response, next: NextFunction) => {
     try {
       const user = await UserService.createUser(req.body);
-      const token = this.createToken(user);
-      resp.status(200).send({ token });
+      const data = { token: this.createToken(user), user: { email: user.email, id: user.id } };
+      resp
+        .status(200)
+        .json(ApiResponse('Signup successful', resp.statusCode, 'success', data));
     } catch (error) {
-      console.log(error);
-      resp.status(400).send({ error: error.detail });
+      next(error);
     }
   }
 
-  async login(req: Request, resp: Response) {
+  login = async (req: Request, resp: Response, next: NextFunction) => {
     try {
       const user = await UserService.findUser(req.body);
       if (user) {
-        const token = this.createToken(user);
-        resp.status(200).send({ token });
+        const data = { token: this.createToken(user), user: { email: user.email, id: user.id } };
+        resp
+          .status(200)
+          .json(ApiResponse('Login successful', resp.statusCode, 'success', data));
       } else {
-        throw new Error('Incorrect email');
+        throw new BadRequest('Incorrect email');
       }
     } catch (error) {
-      const err = error.message || error.detail;
-      console.log(error);
-      resp.status(400).send({ error: err });
+      next(error);
     }
   }
 

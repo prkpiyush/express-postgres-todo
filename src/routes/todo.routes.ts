@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { schemaValidator } from "../middlewares/schema-validator";
+import { schemaValidator } from "../middlewares/schemaValidator";
 import { createTodoSchema, todoDataSchema } from "../schema/todo.schema";
 import TodoController from "../controllers/todo.controller";
 import { requireAuth } from "../middlewares/authMiddleware";
