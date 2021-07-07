@@ -4,3 +4,4 @@ src/migration/
 .env
 ormconfig.json
 logs/
+dump.rdb

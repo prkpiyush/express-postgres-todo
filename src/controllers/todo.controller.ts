@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { NotFound } from '../helpers/error';
 import { RequestWithUser } from 'src/interfaces/requestWithUser';
-import { ApiResponse } from '../helpers/ResponseHandler';
+import { ApiResponse } from '../helpers/responseHandler';
 import TodoService from '../services/todo.srvc';
 
 class TodoController {
@@ -15,7 +15,7 @@ class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   getAll = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
@@ -32,7 +32,7 @@ class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   search = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
@@ -49,7 +49,7 @@ class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   update = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
@@ -64,7 +64,7 @@ class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   delete = async (req: RequestWithUser, resp: Response, next: NextFunction) => {
     try {
@@ -76,7 +76,7 @@ class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 }
 
 export default new TodoController();

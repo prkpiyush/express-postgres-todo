@@ -2,7 +2,8 @@ import { getRepository, ILike } from 'typeorm';
 
 import TodoDTO from '../dto/todo.dto';
 import { Todo } from '../entities/todo.entity';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity'
+import redisWrapper from '../helpers/redisWrapper';
 
 class TodoService {
   async createTodo(todo: TodoDTO, user: User): Promise<Todo> {
@@ -12,14 +13,26 @@ class TodoService {
       title: todo.title,
       description: todo.description,
       isComplete: todo.isComplete,
-      user
+      user,
     };
     return todoRepository.save(todoData);
   }
 
   async getAllTodos(user: User): Promise<Todo[]> {
-    const todoRepository = getRepository(Todo);
-    return todoRepository.find({ where: { user } });
+    const key = `user_${user.id}_todos`;
+    const cachedTodos = await redisWrapper.getAsync(key);
+    if (cachedTodos) {
+      return JSON.parse(cachedTodos);
+    } else {
+      const todoRepository = getRepository(Todo);
+      const todos = await todoRepository.find({ where: { user } });
+      if (todos.length) {
+        redisWrapper.setAsync(key, 10, JSON.stringify(todos));
+        return todos;
+      } else {
+        return null;
+      }
+    }
   }
 
   async searchTodos(searchString: string, user: User): Promise<Todo[]> {
@@ -28,7 +41,8 @@ class TodoService {
       where: [
         { user },
         { title: ILike(`%${searchString}%`) },
-        { description: ILike(`%${searchString}%`) }]
+        { description: ILike(`%${searchString}%`) },
+      ],
     });
   }
 
@@ -41,7 +55,7 @@ class TodoService {
         title: todo.title || todoInDB.title,
         description: todo.description || todoInDB.description,
         isComplete: todo.isComplete || todoInDB.isComplete,
-        user
+        user,
       };
       return await todoRepository.save(updatedTodo);
     }
