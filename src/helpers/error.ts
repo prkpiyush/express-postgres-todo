@@ -1,5 +1,5 @@
 class GeneralError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super();
     this.message = message;
   }
