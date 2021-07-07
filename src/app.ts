@@ -27,7 +27,7 @@ createConnection()
     app.use('/todos', TodoRouter);
     app.use('/auth', AuthRouter);
     app.get('/', (req: Request, resp: Response) => {
-      resp.send('Hello World')
+      resp.send('Hello World');
     });
 
     // Error middleware
@@ -35,8 +35,14 @@ createConnection()
 
     // Start the server
     app.listen(app.get('port'), () => {
-      winstonLogger.info(`App is running at http://localhost:${app.get('port')} in ${app.get('env')} mode')`);
+      winstonLogger.info(
+        `App is running at http://localhost:${app.get('port')} in ${app.get(
+          'env',
+        )} mode')`,
+      );
       winstonLogger.info('Press CTRL-C to stop');
     });
   })
-  .catch(err => winstonLogger.error('Error in creating typeORM connection', err));
+  .catch(err =>
+    winstonLogger.error('Error in creating typeORM connection', err),
+  );

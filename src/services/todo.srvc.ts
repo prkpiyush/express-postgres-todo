@@ -2,7 +2,7 @@ import { getRepository, ILike } from 'typeorm';
 
 import TodoDTO from '../dto/todo.dto';
 import { Todo } from '../entities/todo.entity';
-import { User } from '../entities/user.entity'
+import { User } from '../entities/user.entity';
 import redisWrapper from '../helpers/redisWrapper';
 
 class TodoService {

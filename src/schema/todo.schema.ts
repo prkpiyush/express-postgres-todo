@@ -8,14 +8,14 @@ const isComplete = Joi.bool();
 const createTodoSchema = Joi.object().keys({
   title: title.required(),
   description: description.required(),
-  isComplete: isComplete
+  isComplete: isComplete,
 });
 
 const todoDataSchema = Joi.object().keys({
   id: id,
   title: title,
   description: description,
-  isComplete: isComplete
+  isComplete: isComplete,
 });
 
 export { createTodoSchema, todoDataSchema };

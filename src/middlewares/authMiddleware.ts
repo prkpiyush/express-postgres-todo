@@ -5,7 +5,11 @@ import { User } from 'src/entities/user.entity';
 import { BadRequest, Unauthorized } from '../helpers/error';
 import { RequestWithUser } from 'src/interfaces/requestWithUser';
 
-export const requireAuth = (req: RequestWithUser, resp: Response, next: NextFunction) => {
+export const requireAuth = (
+  req: RequestWithUser,
+  resp: Response,
+  next: NextFunction,
+) => {
   const token = getToken(req);
 
   if (token) {
@@ -13,7 +17,10 @@ export const requireAuth = (req: RequestWithUser, resp: Response, next: NextFunc
       if (err) {
         throw new BadRequest(err.message);
       } else {
-        req.user = { id: decodedToken.userId, email: decodedToken.email } as User;
+        req.user = {
+          id: decodedToken.userId,
+          email: decodedToken.email,
+        } as User;
         next();
       }
     });
@@ -23,7 +30,8 @@ export const requireAuth = (req: RequestWithUser, resp: Response, next: NextFunc
 };
 
 function getToken(request: Request) {
-  const tokenHeader = request.headers.Authorization || request.headers.authorization;
+  const tokenHeader =
+    request.headers.Authorization || request.headers.authorization;
 
   if (tokenHeader && (tokenHeader as string).split(' ')[0] === 'Bearer') {
     return (tokenHeader as string).split(' ')[1];

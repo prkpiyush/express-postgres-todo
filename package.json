@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "start": "nodemon --config nodemon.json"
+    "start": "nodemon --config nodemon.json",
+    "lint": "prettier --check ./src",
+    "format": "prettier --write ./src"
   },
   "author": "Piyush",
   "license": "ISC",
@@ -21,6 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "pg": "^8.6.0",
+    "prettier": "^2.3.2",
     "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.34",
@@ -34,6 +37,7 @@
     "@types/node": "^15.12.5",
     "@types/redis": "^2.8.30",
     "@types/winston": "^2.4.4",
+    "husky": "^7.0.0",
     "nodemon": "^2.0.9",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.3.5"

@@ -7,22 +7,19 @@ class GeneralError extends Error {
   getCode() {
     if (this instanceof BadRequest) {
       return 400;
-    } if (this instanceof Unauthorized) {
+    }
+    if (this instanceof Unauthorized) {
       return 401;
-    } if (this instanceof NotFound) {
+    }
+    if (this instanceof NotFound) {
       return 404;
     }
     return 500;
   }
 }
 
-class BadRequest extends GeneralError { }
-class NotFound extends GeneralError { }
-class Unauthorized extends GeneralError { }
+class BadRequest extends GeneralError {}
+class NotFound extends GeneralError {}
+class Unauthorized extends GeneralError {}
 
-export {
-  GeneralError,
-  BadRequest,
-  NotFound,
-  Unauthorized
-};
+export { GeneralError, BadRequest, NotFound, Unauthorized };

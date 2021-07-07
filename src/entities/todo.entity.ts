@@ -12,7 +12,7 @@ export class Todo {
   @Column()
   description: string;
 
-  @Column({type: 'bool'})
+  @Column({ type: 'bool' })
   isComplete: boolean;
 
   @ManyToOne(() => User, (user: User) => user.todos)

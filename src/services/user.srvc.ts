@@ -10,7 +10,7 @@ class UserService {
     const pass = await this.hashPassword(user.password);
     const userData: User = {
       email: user.email,
-      password: pass
+      password: pass,
     } as User;
 
     return userRepository.save(userData);
@@ -18,10 +18,15 @@ class UserService {
 
   async findUser(user: UserDto): Promise<User> {
     const userRepository = getRepository(User);
-    const userInDB = await userRepository.findOne({ where: { email: user.email } });
+    const userInDB = await userRepository.findOne({
+      where: { email: user.email },
+    });
 
     if (userInDB) {
-      const match = await this.comparePassword(user.password, userInDB.password);
+      const match = await this.comparePassword(
+        user.password,
+        userInDB.password,
+      );
       if (match) {
         return userInDB;
       }
@@ -38,7 +43,10 @@ class UserService {
     return pass;
   }
 
-  private async comparePassword(enteredPassword: string, savedPassword: string) {
+  private async comparePassword(
+    enteredPassword: string,
+    savedPassword: string,
+  ) {
     const auth = await bcrypt.compare(enteredPassword, savedPassword);
     return auth;
   }
