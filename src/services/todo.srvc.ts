@@ -19,20 +19,12 @@ class TodoService {
   }
 
   async getAllTodos(user: User): Promise<Todo[]> {
-    const key = `user_${user.id}_todos`;
-    const cachedTodos = await redisWrapper.getAsync(key);
-    if (cachedTodos) {
-      return JSON.parse(cachedTodos);
-    } else {
-      const todoRepository = getRepository(Todo);
-      const todos = await todoRepository.find({ where: { user } });
-      if (todos.length) {
-        redisWrapper.setAsync(key, 10, JSON.stringify(todos));
-        return todos;
-      } else {
-        return null;
-      }
-    }
+    const todoRepository = getRepository(Todo);
+    const todos = await todoRepository.find({
+      where: { user },
+      cache: 10000,
+    });
+    return todos;
   }
 
   async searchTodos(searchString: string, user: User): Promise<Todo[]> {
