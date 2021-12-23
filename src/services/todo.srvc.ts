@@ -40,7 +40,9 @@ class TodoService {
 
   async updateTodo(todo: TodoDTO, user: User): Promise<Todo> {
     const todoRepository = getRepository(Todo);
-    const todoInDB = await todoRepository.findOne(todo.id, { where: { user } });
+    const todoInDB = await todoRepository.findOne({
+      where: { id: todo.id, user },
+    });
     if (todoInDB) {
       const updatedTodo: Todo = {
         id: todo.id || todoInDB.id,
